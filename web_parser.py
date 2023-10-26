@@ -15,26 +15,9 @@ SIZES_GRID_XPATH = '//*[@id="buyTools"]/div[1]/fieldset/div'
 IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 
 class WebParser():
-    def __init__(self, browser: str, url_load_timeout: int = 2):
+    def __init__(self, url_load_timeout: int = 2):
         try:
-            if browser == 'chrome':
-                options = webdriver.ChromeOptions()
-                options.accept_insecure_certs = True
-                driver = webdriver.Chrome(options)
-
-            elif browser == 'chromium edge':
-                driver = webdriver.ChromiumEdge()
-            elif browser == 'edge':
-                driver = webdriver.Edge()
-            elif browser == 'firefox':
-                driver = webdriver.Firefox()
-            elif browser == 'ie':
-                driver = webdriver.Ie()
-            elif browser == 'safari':
-                driver = webdriver.Safari()
-            else:
-                raise Exception('wrong web driver name')
-            
+            driver = webdriver.Chrome()
             self.driver = driver
             self.driver.maximize_window()
 

@@ -3,18 +3,19 @@ from web_parser import WebParser
 import os, sys, json
 from gevent.pywsgi import WSGIServer
 
-
 app = Flask(__name__)
 
 
 @app.route('/get-data', methods=['GET', 'POST'])
 def get_data():
     if request.method == 'GET' or request.method == 'POST':
+        
+
         #получаем url из аргумента запроса
         url = request.args.get('url')
 
         #создаём экземпляр объекта парсера
-        parser = WebParser('firefox')
+        parser = WebParser()
 
         #получаем результат
         result = parser.run(url)
