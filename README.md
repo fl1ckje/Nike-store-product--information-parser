@@ -20,7 +20,7 @@ if __name__ == '__main__':
     http_server = WSGIServer(('127.0.0.1', 5000), app) 
     http_server.serve_forever()
 ```
-4. Run parser web app:
+5. Run parser web app:
 ```sh
 flask run #or python3 app.py
 ```
