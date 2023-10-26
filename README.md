@@ -15,9 +15,5 @@ export FLASK_DEBUG=0
 ```
 4. Run parser web app:
 ```sh
-flask run
-```
-      or this way
-```sh
-python app.py
+flask run #or python3 app.py
 ```
