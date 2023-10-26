@@ -7,7 +7,7 @@ Product information parser on Nike website using Selenium. Works as web app.
 ```sh
 pip install -r requirements.txt
 ```
-3. set environment variables:
+3. Set environment variables:
 ```sh
 export FLASK_APP=app.py
 export FLASK_ENV=development
