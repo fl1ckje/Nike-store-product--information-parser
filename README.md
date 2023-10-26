@@ -17,7 +17,7 @@ export FLASK_DEBUG=0
 ```sh
 flask run
 ```
-   or this way
+      or this way
 ```sh
 python app.py
 ```
