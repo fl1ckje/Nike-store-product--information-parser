@@ -1,7 +1,7 @@
 from flask import Flask, request
 from web_parser import WebParser
 import os, sys, json
-from gevent.pywsgi import WSGIServer
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -36,6 +36,5 @@ def get_data():
 
 
 if __name__ == '__main__':
-    http_server = WSGIServer(('127.0.0.1', 5000), app)
-    http_server.serve_forever()
+    serve(app, host="127.0.0.1", port=5000)
     # example = http://127.0.0.1:5000/get-data?url=your_link_to_product_page

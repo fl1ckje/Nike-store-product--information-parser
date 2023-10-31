@@ -1,1 +1,1 @@
-pip install selenium requests flask gevent
+pip install selenium requests flask waitress
