@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions  import WebDriverException
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 import time
 
 
@@ -17,7 +18,9 @@ IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 class WebParser():
     def __init__(self, url_load_timeout: int = 2):
         try:
-            driver = webdriver.Chrome()
+            options = ChromeOptions()
+            options.add_argument("--headless=new")
+            driver = webdriver.Chrome(options=options)
             self.driver = driver
             self.driver.maximize_window()
 
