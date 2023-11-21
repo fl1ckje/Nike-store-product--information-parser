@@ -18,89 +18,68 @@ SIZES_GRID_XPATH = '//*[@id="buyTools"]/div[1]/fieldset/div'
 IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 
 class WebParser():
-    def __init__(self, url_load_timeout: int = 2):
-        try:
-            options = ChromeOptions()
-            options.add_argument("--headless=new")
-            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-            self.driver = driver
-            self.driver.maximize_window()
+    def run(self, url):
+        options = ChromeOptions()
+        options.add_argument("--headless=new")
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver.maximize_window()
+        url_load_timeout = 2
 
-            if url_load_timeout >= 2:
-                self.url_load_timeout = url_load_timeout
-            else:
-                self.url_load_timeout = 2
+        #загрузка страницы
+        driver.get(url)
 
-        except Exception as e:
-            print(e)
-            return
+        #пауза для ожидания полной загрузки страницы
+        time.sleep(self.url_load_timeout)
 
-
-    def accept_cookies(self):
-        '''
-        принятие куки
-        '''
+        #принятие куки
         print('accepting cookies...')
         try:
-            cookie_btn = self.driver.find_element(By.XPATH, COOKIE_BTN_XPATH)
+            cookie_btn = driver.find_element(By.XPATH, COOKIE_BTN_XPATH)
             cookie_btn.click()
             print('cookie accept successful')
 
         except WebDriverException:
             print('cookie accept fail')
 
-
-    def run(self, url):
-        '''
-        запуск парсера
-        '''
         product = {}
 
-        #загрузка страницы
-        self.driver.get(url)
-
-        #пауза для ожидания полной загрузки страницы
-        time.sleep(self.url_load_timeout)
-
-        #принятие куки
-        self.accept_cookies()
-
         # получение наименования
-        product['title'] = self.driver.find_element(By.XPATH, TITLE_XPATH).get_attribute('innerHTML')
+        product['title'] = driver.find_element(By.XPATH, TITLE_XPATH).get_attribute('innerHTML')
 
         # получение типа
-        product['subtitle'] = self.driver.find_element(By.XPATH, SUBTITLE_XPATH).get_attribute('innerHTML')
+        product['subtitle'] = driver.find_element(By.XPATH, SUBTITLE_XPATH).get_attribute('innerHTML')
 
         # получение бренда
         product['vendor'] = product['title'].split()[0]
 
         # получение цвета
-        c = self.driver.find_element(By.XPATH, COLOR_XPATH).get_attribute('innerHTML')
+        c = driver.find_element(By.XPATH, COLOR_XPATH).get_attribute('innerHTML')
         product['color'] = c[c.find(':') + 2:]
 
         # получение стиля
-        s = self.driver.find_element(By.XPATH, STYLE_XPATH).get_attribute('innerHTML')
+        s = driver.find_element(By.XPATH, STYLE_XPATH).get_attribute('innerHTML')
         product['style'] = s[s.find(':') + 2:]
 
         # получение описания
-        product['description'] = self.driver.find_element(By.XPATH, DESCRIPTION_XPATH).get_attribute('innerHTML')
+        product['description'] = driver.find_element(By.XPATH, DESCRIPTION_XPATH).get_attribute('innerHTML')
 
         # получение цены
-        product['price'] = self.driver.find_element(By.XPATH, PRICE_XPATH).get_attribute('innerHTML').replace(',', '').replace('฿','')
+        product['price'] = driver.find_element(By.XPATH, PRICE_XPATH).get_attribute('innerHTML').replace(',', '').replace('฿','')
 
         # получение доступных размеров
         sizes = []
-        for sizes_cell in self.driver.find_element(By.XPATH, SIZES_GRID_XPATH).find_elements(By.TAG_NAME, 'div'):
+        for sizes_cell in driver.find_element(By.XPATH, SIZES_GRID_XPATH).find_elements(By.TAG_NAME, 'div'):
             if sizes_cell.find_element(By.TAG_NAME, 'input').get_attribute('disabled') is None:
                 sizes.append(sizes_cell.find_element(By.TAG_NAME, 'label').get_attribute('innerHTML'))
         product['sizes'] = sizes
 
         # получение ссылок на фото
-        img_container = self.driver.find_element(By.XPATH, IMG_CONTAINER_XPATH)
+        img_container = driver.find_element(By.XPATH, IMG_CONTAINER_XPATH)
         imgs = img_container.find_elements(By.TAG_NAME, 'img')
         photo_links = []
         for img in imgs:
             photo_links.append(img.get_attribute('src'))
         product['photo_links'] = photo_links
 
+        driver.quit()
         return product

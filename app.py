@@ -20,9 +20,6 @@ def get_data():
         #получаем результат
         result = parser.run(url)
 
-        #закрываем веб драйвер парсера
-        parser.driver.quit()
-
         #сохраняем результат в json файл рядом со скриптом
         working_dir = os.path.dirname(os.path.abspath(sys.argv[0])).replace('\\', '/')
         with open(f"{working_dir}/{result['title']}.json", "w") as file: 
@@ -36,5 +33,5 @@ def get_data():
 
 
 if __name__ == '__main__':
-    serve(app, host="127.0.0.1", port=5000)
+    serve(app, host="194.67.111.22", port=8080)
     # example = http://127.0.0.1:5000/get-data?url=your_link_to_product_page
