@@ -6,7 +6,6 @@ import time
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-
 COOKIE_BTN_XPATH = '/html/body/div[3]/div/div[1]/div/div[2]/div/div[2]/div[2]/button'
 TITLE_XPATH = '//*[@id="pdp_product_title"]'
 SUBTITLE_XPATH = '/html/body/div[4]/div/div/div[2]/div/div[4]/div[2]/div[2]/div/div/div[1]/div/div[2]/div/h2'
@@ -19,17 +18,17 @@ IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 
 class WebParser():
     def run(self, url):
-        options = ChromeOptions()
-        options.add_argument("--headless=new")
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        driver.maximize_window()
+        chromeOptions = webdriver.ChromeOptions()
+        chromeOptions.add_argument("--headless")
+        chromeOptions.add_argument('--no-sandbox')
+        driver = webdriver.Chrome('/usr/bin/chromedriver',chrome_options=chromeOptions)
         url_load_timeout = 2
 
         #загрузка страницы
         driver.get(url)
 
         #пауза для ожидания полной загрузки страницы
-        time.sleep(self.url_load_timeout)
+        time.sleep(url_load_timeout)
 
         #принятие куки
         print('accepting cookies...')
