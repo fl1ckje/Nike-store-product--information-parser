@@ -2,3 +2,4 @@ selenium
 requests
 flask
 waitress
+webdriver-manager
