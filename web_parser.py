@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions  import WebDriverException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 import time
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 COOKIE_BTN_XPATH = '/html/body/div[3]/div/div[1]/div/div[2]/div/div[2]/div[2]/button'
@@ -20,7 +22,7 @@ class WebParser():
         try:
             options = ChromeOptions()
             options.add_argument("--headless=new")
-            driver = webdriver.Chrome(options=options)
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
             self.driver = driver
             self.driver.maximize_window()
 
