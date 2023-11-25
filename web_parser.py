@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions  import WebDriverException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 import time
 from selenium.webdriver.chrome.service import Service
@@ -16,21 +16,20 @@ PRICE_XPATH = '//*[@id="RightRail"]/div/div[1]/div/div[2]/div/div/div/div/div'
 SIZES_GRID_XPATH = '//*[@id="buyTools"]/div[1]/fieldset/div'
 IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 
+
 class WebParser():
     def run(self, url):
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_argument("--headless")
         chromeOptions.add_argument('--no-sandbox')
-        driver = webdriver.Chrome('/usr/bin/chromedriver',chrome_options=chromeOptions)
+        driver = webdriver.Chrome(
+            '/usr/bin/chromedriver', chrome_options=chromeOptions)
         url_load_timeout = 2
 
-        #загрузка страницы
         driver.get(url)
 
-        #пауза для ожидания полной загрузки страницы
         time.sleep(url_load_timeout)
 
-        #принятие куки
         print('accepting cookies...')
         try:
             cookie_btn = driver.find_element(By.XPATH, COOKIE_BTN_XPATH)
@@ -42,37 +41,35 @@ class WebParser():
 
         product = {}
 
-        # получение наименования
-        product['title'] = driver.find_element(By.XPATH, TITLE_XPATH).get_attribute('innerHTML')
+        product['title'] = driver.find_element(
+            By.XPATH, TITLE_XPATH).get_attribute('innerHTML')
 
-        # получение типа
-        product['subtitle'] = driver.find_element(By.XPATH, SUBTITLE_XPATH).get_attribute('innerHTML')
+        product['subtitle'] = driver.find_element(
+            By.XPATH, SUBTITLE_XPATH).get_attribute('innerHTML')
 
-        # получение бренда
         product['vendor'] = product['title'].split()[0]
 
-        # получение цвета
-        c = driver.find_element(By.XPATH, COLOR_XPATH).get_attribute('innerHTML')
+        c = driver.find_element(
+            By.XPATH, COLOR_XPATH).get_attribute('innerHTML')
         product['color'] = c[c.find(':') + 2:]
 
-        # получение стиля
-        s = driver.find_element(By.XPATH, STYLE_XPATH).get_attribute('innerHTML')
+        s = driver.find_element(
+            By.XPATH, STYLE_XPATH).get_attribute('innerHTML')
         product['style'] = s[s.find(':') + 2:]
 
-        # получение описания
-        product['description'] = driver.find_element(By.XPATH, DESCRIPTION_XPATH).get_attribute('innerHTML')
+        product['description'] = driver.find_element(
+            By.XPATH, DESCRIPTION_XPATH).get_attribute('innerHTML')
 
-        # получение цены
-        product['price'] = driver.find_element(By.XPATH, PRICE_XPATH).get_attribute('innerHTML').replace(',', '').replace('฿','')
+        product['price'] = driver.find_element(By.XPATH, PRICE_XPATH).get_attribute(
+            'innerHTML').replace(',', '').replace('฿', '')
 
-        # получение доступных размеров
         sizes = []
         for sizes_cell in driver.find_element(By.XPATH, SIZES_GRID_XPATH).find_elements(By.TAG_NAME, 'div'):
             if sizes_cell.find_element(By.TAG_NAME, 'input').get_attribute('disabled') is None:
-                sizes.append(sizes_cell.find_element(By.TAG_NAME, 'label').get_attribute('innerHTML'))
+                sizes.append(sizes_cell.find_element(
+                    By.TAG_NAME, 'label').get_attribute('innerHTML'))
         product['sizes'] = sizes
 
-        # получение ссылок на фото
         img_container = driver.find_element(By.XPATH, IMG_CONTAINER_XPATH)
         imgs = img_container.find_elements(By.TAG_NAME, 'img')
         photo_links = []
