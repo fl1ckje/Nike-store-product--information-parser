@@ -1,10 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 import time
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 
 COOKIE_BTN_XPATH = '/html/body/div[3]/div/div[1]/div/div[2]/div/div[2]/div[2]/button'
 TITLE_XPATH = '//*[@id="pdp_product_title"]'
@@ -19,10 +16,9 @@ IMG_CONTAINER_XPATH = '//*[@id="pdp-6-up"]'
 
 class WebParser():
     def run(self, url):
-        chromeOptions = webdriver.ChromeOptions()
-        chromeOptions.add_argument("--headless")
-        chromeOptions.add_argument('--no-sandbox')
-        driver = webdriver.Chrome(options=chromeOptions)
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--headless")
+        driver = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver', options=options)
 
         # driver = webdriver.Chrome(
         #     '/usr/bin/chromedriver', chrome_options=chromeOptions)
