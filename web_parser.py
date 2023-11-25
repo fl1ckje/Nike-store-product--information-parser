@@ -22,8 +22,10 @@ class WebParser():
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_argument("--headless")
         chromeOptions.add_argument('--no-sandbox')
-        driver = webdriver.Chrome(
-            '/usr/bin/chromedriver', chrome_options=chromeOptions)
+        driver = webdriver.Chrome(options=chromeOptions)
+
+        # driver = webdriver.Chrome(
+        #     '/usr/bin/chromedriver', chrome_options=chromeOptions)
         url_load_timeout = 2
 
         driver.get(url)
