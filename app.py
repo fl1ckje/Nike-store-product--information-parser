@@ -26,4 +26,4 @@ def get_data():
 if __name__ == '__main__':
     # serve(app, host="194.67.111.22", port=8080)
     # example = http://127.0.0.1:5000/get-data?url=your_link_to_product_page
-    serve(app, host="127.0.0.1", port=8080)
+    serve(app, host="95.163.235.215", port=8080)
