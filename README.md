@@ -2,7 +2,7 @@
 Product information parser on Nike website using Selenium. Works as web app.
 
 ## Usage quick-guide
-1. Make sure that you have got Chrome browser installed.
+1. Make sure that you have got Firefox browser and gecko driver installed.
 2. Download this repository.
 3. Install requirements using following command:
 ```sh
