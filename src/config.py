@@ -11,7 +11,7 @@ GECKO_DRIVER_PATH = "/snap/bin/firefox.geckodriver"
 Get gecko driver here: https://github.com/mozilla/geckodriver/releases
 """
 
-HEADLESS = False
+HEADLESS = True
 SAVE_PRODUCT_TO_FILE = True
 
 CWD_PATH = Path.cwd()
