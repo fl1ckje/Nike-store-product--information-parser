@@ -1,5 +1,3 @@
-selenium
-requests
-flask
-waitress
-webdriver-manager
+ fastapi
+ uvicorn[standard]
+ selenium
