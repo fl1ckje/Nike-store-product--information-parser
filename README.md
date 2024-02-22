@@ -1,5 +1,5 @@
-# Nike-store-product-page-parser
-Product information parser on Nike website using Selenium. Works as web app.
+# Nike-store-product--information-parser
+Product information parser on Nike website using Selenium.
 
 ## Usage quick-guide
 1. Make sure that you have got Firefox browser and gecko driver installed.
@@ -8,19 +8,12 @@ Product information parser on Nike website using Selenium. Works as web app.
 ```sh
 pip install -r requirements.txt
 ```
-4. Set environment variables:
-```sh
-export FLASK_APP=app.py
-export FLASK_ENV=development
-export FLASK_DEBUG=0
-```
-5. In app.py configure host and port:
+4. In src/config.py configure host and port:
 ```python
-if __name__ == '__main__':
-    # paste here your host and port instead of 127.0.0.1 and 5000
-    serve(app, host="127.0.0.1", port=5000)
+HOST = '127.0.0.1'
+PORT = 9222
 ```
-6. Run parser web app:
+5. Run parser web app:
 ```sh
-flask run #or python3 app.py
+python3 main.py
 ```
