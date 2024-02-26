@@ -8,16 +8,16 @@ Product information parser on Nike website using Selenium.
 ```sh
 pip install -r requirements.txt
 ```
-4. In src/config.py configure host and port:
+4. In `src/config.py` configure host and port:
 ```python
 HOST = '127.0.0.1'
 PORT = 9222
 ```
-5. In src/config.py configure path to geckodriver:
+5. In `src/config.py` configure path to geckodriver:
 ```python
 GECKO_DRIVER_PATH = "/snap/bin/firefox.geckodriver"
 ```
-6. Run parser web app:
+6. Run application:
 ```sh
 python3 main.py
 ```
