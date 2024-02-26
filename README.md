@@ -13,6 +13,10 @@ pip install -r requirements.txt
 HOST = '127.0.0.1'
 PORT = 9222
 ```
+5. In src/config.py configure path to geckodriver:
+```python
+GECKO_DRIVER_PATH = "/snap/bin/firefox.geckodriver"
+```
 5. Run parser web app:
 ```sh
 python3 main.py
