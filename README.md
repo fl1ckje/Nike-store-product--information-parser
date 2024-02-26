@@ -17,7 +17,7 @@ PORT = 9222
 ```python
 GECKO_DRIVER_PATH = "/snap/bin/firefox.geckodriver"
 ```
-5. Run parser web app:
+6. Run parser web app:
 ```sh
 python3 main.py
 ```
