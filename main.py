@@ -20,24 +20,41 @@ async def get_product(url: str = None):
             }
         )
     else:
-        result = parse_nike_product_page(url)
+        try:
+
+            result = parse_nike_product_page(url)
+            return json.dumps(
+                {
+                    "status": "OK",
+                    "result": result
+                }
+            )
+        except Exception as e:
+            return json.dumps(
+                {
+                    "status": "ERR",
+                    "result": str(e)
+                }
+            )
+
+
+@app.get("/get-product-list/")
+async def get_product_list():
+    try:
+        result = parse_nike_product_list(NIKE_DATA_PATH)
         return json.dumps(
             {
                 "status": "OK",
                 "result": result
             }
         )
-
-
-@app.get("/get-product-list/")
-async def get_product_list():
-    result = parse_nike_product_list(NIKE_DATA_PATH)
-    return json.dumps(
-        {
-            "status": "OK",
-            "result": result
-        }
-    )
+    except Exception as e:
+        return json.dumps(
+            {
+                "status": "ERR",
+                "result": str(e)
+            }
+        )
 
 
 if __name__ == "__main__":
