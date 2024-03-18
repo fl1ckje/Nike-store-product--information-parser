@@ -21,7 +21,6 @@ async def get_product(url: str = None):
         )
     else:
         try:
-
             result = parse_nike_product_page(url)
             return json.dumps(
                 {

@@ -41,96 +41,102 @@ def parse_nike_product_page(url: str):
     """
     driver = init_geckodriver()
 
-    # get target page
-    driver.get(url)
+    try:
+        # get target page
+        driver.get(url)
 
-    accept_cookie(driver)
+        accept_cookie(driver)
 
-    product = {}
+        product = {}
 
-    # title
-    product["title"] = driver.find_element(
-        By.XPATH, TITLE_XPATH).get_attribute("innerHTML")
+        # title
+        product["title"] = driver.find_element(
+            By.XPATH, TITLE_XPATH).get_attribute("innerHTML")
 
-    # subtitle
-    product["subtitle"] = driver.find_element(
-        By.XPATH, SUBTITLE_XPATH).get_attribute("innerHTML")
+        # subtitle
+        product["subtitle"] = driver.find_element(
+            By.XPATH, SUBTITLE_XPATH).get_attribute("innerHTML")
 
-    # vendor
-    product["vendor"] = product["title"].split()[0]
+        # vendor
+        product["vendor"] = product["title"].split()[0]
 
-    # color
-    color = driver.find_element(
-        By.XPATH, COLOR_XPATH).get_attribute("innerHTML")
-    product["color"] = color[color.find(":") + 2:]
+        # color
+        color = driver.find_element(
+            By.XPATH, COLOR_XPATH).get_attribute("innerHTML")
+        product["color"] = color[color.find(":") + 2:]
 
-    # style
-    size = driver.find_element(
-        By.XPATH, STYLE_XPATH).get_attribute("innerHTML")
-    product["style"] = size[size.find(":") + 2:]
+        # style
+        size = driver.find_element(
+            By.XPATH, STYLE_XPATH).get_attribute("innerHTML")
+        product["style"] = size[size.find(":") + 2:]
 
-    # description
-    product["description"] = driver.find_element(
-        By.XPATH, DESCRIPTION_XPATH).get_attribute("innerHTML")
+        # description
+        product["description"] = driver.find_element(
+            By.XPATH, DESCRIPTION_XPATH).get_attribute("innerHTML")
 
-    # price
-    product["price"] = driver.find_element(By.XPATH, PRICE_XPATH).get_attribute(
-        "innerHTML").replace(",", "").replace("฿", "")
+        # price
+        product["price"] = driver.find_element(By.XPATH, PRICE_XPATH).get_attribute(
+            "innerHTML").replace(",", "").replace("฿", "")
 
-    # available sizes
-    sizes = []
-    for sizes_cell in driver.find_element(By.XPATH, SIZES_GRID_XPATH).find_elements(By.TAG_NAME, "div"):
-        if sizes_cell.find_element(By.TAG_NAME, "input").get_attribute("disabled") is None:
-            sizes.append(sizes_cell.find_element(
-                By.TAG_NAME, "label").get_attribute("innerHTML"))
-    product["sizes"] = sizes
+        # available sizes
+        sizes = []
+        for sizes_cell in driver.find_element(By.XPATH, SIZES_GRID_XPATH).find_elements(By.TAG_NAME, "div"):
+            if sizes_cell.find_element(By.TAG_NAME, "input").get_attribute("disabled") is None:
+                sizes.append(sizes_cell.find_element(
+                    By.TAG_NAME, "label").get_attribute("innerHTML"))
+        product["sizes"] = sizes
 
-    # images
-    img_container = driver.find_element(By.XPATH, IMG_CONTAINER_XPATH)
-    imgs = img_container.find_elements(By.TAG_NAME, "img")
-    images = []
-    for img in imgs:
-        images.append(img.get_attribute("src"))
-    product["images"] = images
+        # images
+        img_container = driver.find_element(By.XPATH, IMG_CONTAINER_XPATH)
+        imgs = img_container.find_elements(By.TAG_NAME, "img")
+        images = []
+        for img in imgs:
+            images.append(img.get_attribute("src"))
+        product["images"] = images
+        driver.quit()
 
-    driver.quit()
-
-    if SAVE_PRODUCT_TO_FILE:
-        SAVE_PATH = DOWNLOADS_PATH / f"{product['title']}.json"
-        with open(SAVE_PATH, "w") as file:
-            json.dump(product, file)
-            print(f'==> Saved product: {SAVE_PATH}')
-
-    return product
+        if SAVE_PRODUCT_TO_FILE:
+            SAVE_PATH = DOWNLOADS_PATH / f"{product['title']}.json"
+            with open(SAVE_PATH, "w") as file:
+                json.dump(product, file)
+                print(f'==> Saved product: {SAVE_PATH}')
+        return product
+    except Exception as e:
+        driver.quit()
+        return None   
 
 
 def parse_nike_product_list(txt_path: Union[str, Path]) -> dict:
     """
     Parses product list from https://www.nike.com/th/
     """
-    nike_cats = []
-    with open(txt_path, "r") as file:
-        nike_cats = file.readlines()
-
     driver = init_geckodriver()
-    driver.get("https://www.nike.com/th/")
-    accept_cookie(driver)
 
-    idx = 0
-    products_links_dict = {}
-    for i in nike_cats:
-        print(f"[{i}]:\nlink: {i}\n")
-        products_links = get_category_products_links(driver, i)
-        SAVE_PATH = DOWNLOADS_PATH / f"nike_data_{idx}.json"
-        with open(SAVE_PATH, "w") as file:
-            json.dump(products_links, file)
-            print(f'==> Saved product list: {SAVE_PATH}')
-        products_links_dict[idx] = products_links
-        idx += 1
+    try:
+        driver.get("https://www.nike.com/th/")
+        accept_cookie(driver)
 
-    driver.quit()
+        nike_cats = []
+        with open(txt_path, "r") as file:
+            nike_cats = file.readlines()
 
-    return products_links_dict
+        idx = 0
+        products_links_dict = {}
+        for i in nike_cats:
+            print(f"[{i}]:\nlink: {i}\n")
+            products_links = get_category_products_links(driver, i)
+            SAVE_PATH = DOWNLOADS_PATH / f"nike_data_{idx}.json"
+            with open(SAVE_PATH, "w") as file:
+                json.dump(products_links, file)
+                print(f'==> Saved product list: {SAVE_PATH}')
+            products_links_dict[idx] = products_links
+            idx += 1
+        driver.quit()
+
+        return products_links_dict
+    except Exception as e:
+        driver.quit()
+        return None
 
 
 def get_category_products_links(driver: WebDriver, url: str) -> list:
